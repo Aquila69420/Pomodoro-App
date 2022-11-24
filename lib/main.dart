@@ -1,11 +1,11 @@
 
-// ignore_for_file: sized_box_for_whitespace, prefer_const_constructors, use_key_in_widget_constructors
+// ignore_for_file: sized_box_for_whitespace, prefer_const_constructors, use_key_in_widget_constructors, import_of_legacy_library_into_null_safe
 
 // Imports
 import 'dart:math' as math;
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-//import 'package:iosstyleswitch/iosstyleswitch.dart';
+import 'package:iosstyleswitch/iosstyleswitch.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
@@ -272,39 +272,43 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
   }
   
   void toBreak() {
-    controllerPomodoro.addListener(() {
-      if (controllerPomodoro.isDismissed) {
-        pomodoroCount++; // Increments the Pomodoro Counter
-        // If the timer is finished
-        if (pomodoroCount==4) {
-          setState(() {
-          _tabController.animateTo(2); // Switches to Long Break Tab
-          pomodoroCount = 0; // Resets the Pomodoro Counter 
-        });
-        } else {
-          setState(() {
-          _tabController.animateTo(1); // Switches to Short Break Tab
-        });
+    if (autoTransition) {
+      controllerPomodoro.addListener(() {
+        if (controllerPomodoro.isDismissed) {
+          pomodoroCount++; // Increments the Pomodoro Counter
+          // If the timer is finished
+          if (pomodoroCount==4) {
+            setState(() {
+            _tabController.animateTo(2); // Switches to Long Break Tab
+            pomodoroCount = 0; // Resets the Pomodoro Counter 
+          });
+          } else {
+            setState(() {
+            _tabController.animateTo(1); // Switches to Short Break Tab
+          });
+          }
         }
-      }
-    });
+      });
+    }
   }
 
   void toPomodoro() {
-    controllerShortBreak.addListener(() {
-      if (controllerShortBreak.isDismissed) {
-        setState(() {
-          _tabController.animateTo(0); // Switches to Pomodoro Tab
-        });
-      }
-    });
-    controllerLongBreak.addListener(() {
-      if (controllerLongBreak.isDismissed) {
-        setState(() {
-          _tabController.animateTo(0); // Switches to Pomodoro Tab
-        });
-      }
-    });
+    if (autoTransition) {
+      controllerShortBreak.addListener(() {
+        if (controllerShortBreak.isDismissed) {
+          setState(() {
+            _tabController.animateTo(0); // Switches to Pomodoro Tab
+          });
+        }
+      });
+      controllerLongBreak.addListener(() {
+        if (controllerLongBreak.isDismissed) {
+          setState(() {
+            _tabController.animateTo(0); // Switches to Pomodoro Tab
+          });
+        }
+      });
+    }
   }
 
   @override
@@ -526,7 +530,7 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
                                             backgroundColor: Color.fromARGB(255, 35, 37, 84),
                                             context: context,
                                             builder: (context) => Container(
-                                              height: 300,
+                                              height: 325,
                                               child: Column(
                                                 children: [
                                                   Text(''),
@@ -543,16 +547,16 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
                                                                 color: Colors.white)),
                                                       ),
                                                     ),
-                                                    SizedBox(width: 5),
-                                                    // IosSwitch(
-                                                    //   isActive: autoTransition,
-                                                    //   disableBackgroundColor: Color.fromARGB(255, 99, 120, 255),
-                                                    //   activeBackgroundColor: Color.fromARGB(255, 48, 96, 255),
-                                                    //   size: 25,
-                                                    //   onChanged: (autoTransition) {
-                                                    //     setState(() => this.autoTransition = autoTransition);
-                                                    //   },
-                                                    // ),
+                                                    SizedBox(width: 20),
+                                                    IosSwitch(
+                                                      isActive: autoTransition,
+                                                      disableBackgroundColor: Color.fromARGB(255, 99, 120, 255),
+                                                      activeBackgroundColor: Color.fromARGB(255, 48, 96, 255),
+                                                      size: 30,
+                                                      onChanged: (autoTransition) {
+                                                        setState(() => this.autoTransition = autoTransition);
+                                                      },
+                                                    ),
                                                   ],),
                                                   Text(''),
                                                   Padding(
@@ -915,7 +919,7 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
                                             backgroundColor: Color.fromARGB(255, 35, 37, 84),
                                             context: context,
                                             builder: (context) => Container(
-                                              height: 300,
+                                              height: 325,
                                               child: Column(
                                                 children: [
                                                   Text(''),
@@ -932,16 +936,16 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
                                                                 color: Colors.white)),
                                                       ),
                                                     ),
-                                                    SizedBox(width: 5),
-                                                    // IosSwitch(
-                                                    //   isActive: autoTransition,
-                                                    //   disableBackgroundColor: Color.fromARGB(255, 99, 120, 255),
-                                                    //   activeBackgroundColor: Color.fromARGB(255, 48, 96, 255),
-                                                    //   size: 25,
-                                                    //   onChanged: (autoTransition) {
-                                                    //     setState(() => this.autoTransition = autoTransition);
-                                                    //   },
-                                                    // ),
+                                                    SizedBox(width: 20),
+                                                    IosSwitch(
+                                                      isActive: autoTransition,
+                                                      disableBackgroundColor: Color.fromARGB(255, 99, 120, 255),
+                                                      activeBackgroundColor: Color.fromARGB(255, 48, 96, 255),
+                                                      size: 30,
+                                                      onChanged: (autoTransition) {
+                                                        setState(() => this.autoTransition = autoTransition);
+                                                      },
+                                                    ),
                                                   ],),
                                                   Text(''),
                                                   Padding(
@@ -1302,7 +1306,7 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
                                             backgroundColor: Color.fromARGB(255, 35, 37, 84),
                                             context: context,
                                             builder: (context) => Container(
-                                              height: 300,
+                                              height: 325,
                                               child: Column(
                                                 children: [
                                                   Text(''),
@@ -1319,16 +1323,16 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
                                                                 color: Colors.white)),
                                                       ),
                                                     ),
-                                                    SizedBox(width: 5),
-                                                    // IosSwitch(
-                                                    //   isActive: autoTransition,
-                                                    //   disableBackgroundColor: Color.fromARGB(255, 99, 120, 255),
-                                                    //   activeBackgroundColor: Color.fromARGB(255, 48, 96, 255),
-                                                    //   size: 25,
-                                                    //   onChanged: (autoTransition) {
-                                                    //     setState(() => this.autoTransition = autoTransition);
-                                                    //   },
-                                                    // ),
+                                                    SizedBox(width: 20),
+                                                    IosSwitch(
+                                                      isActive: autoTransition,
+                                                      disableBackgroundColor: Color.fromARGB(255, 99, 120, 255),
+                                                      activeBackgroundColor: Color.fromARGB(255, 48, 96, 255),
+                                                      size: 30,
+                                                      onChanged: (autoTransition) {
+                                                        setState(() => this.autoTransition = autoTransition);
+                                                      },
+                                                    ),
                                                   ],),
                                                   Text(''),
                                                   Padding(
